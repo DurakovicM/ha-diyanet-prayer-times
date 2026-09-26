@@ -1,0 +1,40 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Ülke seçin",
+        "data": { "country_id": "Ülke" }
+      },
+      "state": {
+        "title": "İl / eyalet seçin",
+        "data": { "state_id": "İl / eyalet" }
+      },
+      "city": {
+        "title": "İlçe / şehir seçin",
+        "data": { "city_id": "İlçe / şehir" }
+      }
+    },
+    "error": {
+      "cannot_connect": "Diyanet namaz vakti servisine ulaşılamadı."
+    },
+    "abort": {
+      "already_configured": "Bu konum zaten ekli.",
+      "no_places": "Bu seçim için konum bulunamadı."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "imsak": { "name": "İmsak" },
+      "sunrise": { "name": "Güneş" },
+      "dhuhr": { "name": "Öğle" },
+      "asr": { "name": "İkindi" },
+      "maghrib": { "name": "Akşam" },
+      "isha": { "name": "Yatsı" },
+      "next_prayer": {
+        "name": "Sonraki vakit",
+        "state_attributes": { "prayer": { "name": "Vakit" } }
+      },
+      "hijri_date": { "name": "Hicri tarih" }
+    }
+  }
+}

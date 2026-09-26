@@ -1,0 +1,40 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Select country",
+        "data": { "country_id": "Country" }
+      },
+      "state": {
+        "title": "Select state / province",
+        "data": { "state_id": "State / province" }
+      },
+      "city": {
+        "title": "Select city / district",
+        "data": { "city_id": "City / district" }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not reach the Diyanet prayer times service."
+    },
+    "abort": {
+      "already_configured": "This city is already configured.",
+      "no_places": "No locations were returned for this selection."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "imsak": { "name": "Imsak" },
+      "sunrise": { "name": "Sunrise" },
+      "dhuhr": { "name": "Dhuhr" },
+      "asr": { "name": "Asr" },
+      "maghrib": { "name": "Maghrib" },
+      "isha": { "name": "Isha" },
+      "next_prayer": {
+        "name": "Next prayer",
+        "state_attributes": { "prayer": { "name": "Prayer" } }
+      },
+      "hijri_date": { "name": "Hijri date" }
+    }
+  }
+}

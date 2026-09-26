@@ -1,0 +1,14 @@
+{
+  "domain": "diyanet_prayer_times",
+  "name": "Diyanet Prayer Times",
+  "codeowners": [
+    "@DurakovicM"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/DurakovicM/ha-diyanet-prayer-times",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/DurakovicM/ha-diyanet-prayer-times/issues",
+  "requirements": [],
+  "version": "0.1.0"
+}
