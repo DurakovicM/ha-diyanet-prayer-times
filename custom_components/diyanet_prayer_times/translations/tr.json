@@ -30,6 +30,23 @@
     }
   },
   "entity": {
+    "binary_sensor": {
+      "ezan": {
+        "name": "Ezan",
+        "state_attributes": {
+          "prayer": {
+            "name": "Vakit",
+            "state": {
+              "imsak": "İmsak",
+              "dhuhr": "Öğle",
+              "asr": "İkindi",
+              "maghrib": "Akşam",
+              "isha": "Yatsı"
+            }
+          }
+        }
+      }
+    },
     "sensor": {
       "imsak": {
         "name": "İmsak",

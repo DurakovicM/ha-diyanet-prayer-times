@@ -30,6 +30,23 @@
     }
   },
   "entity": {
+    "binary_sensor": {
+      "ezan": {
+        "name": "Call to prayer",
+        "state_attributes": {
+          "prayer": {
+            "name": "Prayer",
+            "state": {
+              "imsak": "Dawn",
+              "dhuhr": "Noon",
+              "asr": "Afternoon",
+              "maghrib": "Sunset",
+              "isha": "Night"
+            }
+          }
+        }
+      }
+    },
     "sensor": {
       "imsak": {
         "name": "Dawn",

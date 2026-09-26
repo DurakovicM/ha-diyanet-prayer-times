@@ -8,13 +8,11 @@ from typing import Any
 from homeassistant.components.sensor import SensorDeviceClass, SensorEntity
 from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
-from homeassistant.helpers.update_coordinator import CoordinatorEntity
-from homeassistant.util import slugify
 
-from .const import DOMAIN, PRAYERS
+from .const import PRAYERS
 from .coordinator import DiyanetConfigEntry, DiyanetCoordinator
+from .entity import DiyanetEntity
 from . import i18n
 
 
@@ -44,41 +42,7 @@ async def async_setup_entry(
     async_add_entities(entities)
 
 
-class DiyanetEntity(CoordinatorEntity[DiyanetCoordinator], SensorEntity):
-    """Base entity attached to one service device per city.
-
-    Names come from the integration's own language setting rather than
-    Home Assistant's, so they are set directly instead of via translations.
-    Entity IDs are language-independent: sensor.<device>_<object_id>.
-    """
-
-    _attr_has_entity_name = True
-
-    def __init__(
-        self, coordinator: DiyanetCoordinator, key: str, object_id: str
-    ) -> None:
-        """Initialize the entity."""
-        super().__init__(coordinator)
-        entry = coordinator.config_entry
-        self._key = key
-        self._attr_translation_key = key
-        self._attr_unique_id = f"{entry.unique_id}_{object_id}"
-        # Same prefix Home Assistant derives from the device name.
-        self.entity_id = f"sensor.{slugify(entry.title)}_{object_id}"
-        self._attr_device_info = DeviceInfo(
-            identifiers={(DOMAIN, entry.entry_id)},
-            name=entry.title,
-            manufacturer="Diyanet İşleri Başkanlığı",
-            entry_type=DeviceEntryType.SERVICE,
-        )
-
-    @property
-    def name(self) -> str:
-        """Return the name in the integration's language."""
-        return i18n.name(self._key, self.coordinator.language)
-
-
-class PrayerTimestampSensor(DiyanetEntity):
+class PrayerTimestampSensor(DiyanetEntity, SensorEntity):
     """Today's time for one prayer as a timestamp, for automations."""
 
     _attr_device_class = SensorDeviceClass.TIMESTAMP
@@ -86,7 +50,7 @@ class PrayerTimestampSensor(DiyanetEntity):
 
     def __init__(self, coordinator: DiyanetCoordinator, prayer: str) -> None:
         """Initialize the sensor."""
-        super().__init__(coordinator, prayer, prayer)
+        super().__init__(coordinator, "sensor", prayer, prayer)
 
     @property
     def name(self) -> str:
@@ -107,14 +71,14 @@ class PrayerTimestampSensor(DiyanetEntity):
         return {"time": _clock(self.native_value)}
 
 
-class PrayerClockSensor(DiyanetEntity):
+class PrayerClockSensor(DiyanetEntity, SensorEntity):
     """Today's time for one prayer as plain text, e.g. '05:23'."""
 
     _attr_icon = "mdi:clock-outline"
 
     def __init__(self, coordinator: DiyanetCoordinator, prayer: str) -> None:
         """Initialize the sensor."""
-        super().__init__(coordinator, prayer, f"{prayer}_time")
+        super().__init__(coordinator, "sensor", prayer, f"{prayer}_time")
 
     @property
     def native_value(self) -> str | None:
@@ -124,7 +88,7 @@ class PrayerClockSensor(DiyanetEntity):
         return _clock(today.times[self._key])
 
 
-class NextPrayerTimestampSensor(DiyanetEntity):
+class NextPrayerTimestampSensor(DiyanetEntity, SensorEntity):
     """The next upcoming prayer as a timestamp, for automations."""
 
     _attr_device_class = SensorDeviceClass.TIMESTAMP
@@ -132,7 +96,7 @@ class NextPrayerTimestampSensor(DiyanetEntity):
 
     def __init__(self, coordinator: DiyanetCoordinator) -> None:
         """Initialize the sensor."""
-        super().__init__(coordinator, "next_prayer", "next_prayer")
+        super().__init__(coordinator, "sensor", "next_prayer", "next_prayer")
 
     @property
     def name(self) -> str:
@@ -155,14 +119,14 @@ class NextPrayerTimestampSensor(DiyanetEntity):
         return {"prayer": upcoming[0], "time": _clock(upcoming[1])}
 
 
-class NextPrayerSensor(DiyanetEntity):
+class NextPrayerSensor(DiyanetEntity, SensorEntity):
     """The next upcoming prayer as text, e.g. 'Sunset 19:03'."""
 
     _attr_icon = "mdi:mosque"
 
     def __init__(self, coordinator: DiyanetCoordinator) -> None:
         """Initialize the sensor."""
-        super().__init__(coordinator, "next_prayer", "next_prayer_time")
+        super().__init__(coordinator, "sensor", "next_prayer", "next_prayer_time")
 
     @property
     def native_value(self) -> str | None:
@@ -179,14 +143,14 @@ class NextPrayerSensor(DiyanetEntity):
         return {"prayer": upcoming[0] if upcoming else None}
 
 
-class HijriDateSensor(DiyanetEntity):
+class HijriDateSensor(DiyanetEntity, SensorEntity):
     """Today's Hijri date, with moon phase and qibla time."""
 
     _attr_icon = "mdi:calendar-star"
 
     def __init__(self, coordinator: DiyanetCoordinator) -> None:
         """Initialize the sensor."""
-        super().__init__(coordinator, "hijri_date", "hijri_date")
+        super().__init__(coordinator, "sensor", "hijri_date", "hijri_date")
 
     @property
     def native_value(self) -> str | None:

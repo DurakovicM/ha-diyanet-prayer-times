@@ -30,6 +30,23 @@
     }
   },
   "entity": {
+    "binary_sensor": {
+      "ezan": {
+        "name": "Ezan",
+        "state_attributes": {
+          "prayer": {
+            "name": "Namaz",
+            "state": {
+              "imsak": "Zora",
+              "dhuhr": "Podne",
+              "asr": "Ikindija",
+              "maghrib": "Akšam",
+              "isha": "Jacija"
+            }
+          }
+        }
+      }
+    },
     "sensor": {
       "imsak": {
         "name": "Zora",

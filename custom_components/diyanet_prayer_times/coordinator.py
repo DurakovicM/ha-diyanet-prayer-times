@@ -21,8 +21,10 @@ _LOGGER = logging.getLogger(__name__)
 
 STORAGE_VERSION = 1
 
-# Prayers considered for "next prayer" (sunrise is not a prayer).
+# Prayers considered for "next prayer" and the ezan (sunrise is not a prayer).
 NEXT_PRAYER_KEYS = ("imsak", "dhuhr", "asr", "maghrib", "isha")
+# How long the ezan binary sensor stays on after a prayer time.
+EZAN_DURATION = timedelta(minutes=1)
 
 type DiyanetConfigEntry = ConfigEntry[DiyanetCoordinator]
 
@@ -106,10 +108,25 @@ class DiyanetCoordinator(DataUpdateCoordinator[list[DayTimes]]):
                     return key, day.times[key]
         return None
 
+    def active_prayer(self, now: datetime | None = None) -> str | None:
+        """Return the prayer whose ezan window contains now, if any."""
+        now = now or dt_util.utcnow()
+        for day in self.data or []:
+            for key in NEXT_PRAYER_KEYS:
+                if day.times[key] <= now < day.times[key] + EZAN_DURATION:
+                    return key
+        return None
+
     def _next_tick(self, now: datetime) -> datetime | None:
         """Next moment a sensor value changes: a prayer or the city's midnight."""
         candidates = [
             t for day in self.data or [] for t in day.times.values() if t > now
+        ]
+        candidates += [
+            end
+            for day in self.data or []
+            for key in NEXT_PRAYER_KEYS
+            if (end := day.times[key] + EZAN_DURATION) > now
         ]
         if (today := self.today(now)) is not None:
             tz = today.times["imsak"].tzinfo

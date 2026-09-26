@@ -39,6 +39,7 @@ language.
 | `sensor.<city>_hijri_date` | `15 Rabi al-Thani 1448` | Moon phase picture, `qibla_time` attribute |
 | `sensor.<city>_imsak` … `_isha` | timestamp | Automations (diagnostic, hidden from default dashboards) |
 | `sensor.<city>_next_prayer` | timestamp | Automations; attributes `prayer`, `time` |
+| `binary_sensor.<city>_ezan` | on / off | On for 1 minute at each of the five prayers (motion class, for Alexa routines); attribute `prayer` |
 
 Prayer keys: `imsak` (Dawn), `sunrise`, `dhuhr` (Noon), `asr` (Afternoon),
 `maghrib` (Sunset), `isha` (Night).
@@ -72,6 +73,18 @@ actions:
     data:
       message: "Akşam vakti"
 ```
+
+## Alexa: play the ezan
+
+The standard Alexa skill cannot receive audio from Home Assistant, but an Alexa
+routine can react to `binary_sensor.<city>_ezan` (it behaves like a motion sensor):
+
+1. *Settings → Voice assistants → Alexa*: expose `binary_sensor.<city>_ezan`.
+   With Home Assistant Cloud, make sure *state reporting* is enabled.
+2. "Alexa, discover devices".
+3. Alexa app → *Routines → +*: **When** Smart Home → *Call to prayer* → detects
+   motion; **Alexa will** e.g. Music & Podcasts → an ezan recording, or a skill;
+   **From** your Echo.
 
 ## Development
 

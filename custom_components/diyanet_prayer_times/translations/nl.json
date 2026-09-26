@@ -30,6 +30,23 @@
     }
   },
   "entity": {
+    "binary_sensor": {
+      "ezan": {
+        "name": "Gebedsoproep",
+        "state_attributes": {
+          "prayer": {
+            "name": "Gebed",
+            "state": {
+              "imsak": "Ochtendgebed",
+              "dhuhr": "Middaggebed",
+              "asr": "Namiddaggebed",
+              "maghrib": "Avondgebed",
+              "isha": "Nachtgebed"
+            }
+          }
+        }
+      }
+    },
     "sensor": {
       "imsak": {
         "name": "Ochtendgebed",

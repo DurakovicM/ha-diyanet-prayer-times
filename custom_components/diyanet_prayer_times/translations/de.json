@@ -30,6 +30,23 @@
     }
   },
   "entity": {
+    "binary_sensor": {
+      "ezan": {
+        "name": "Gebetsruf",
+        "state_attributes": {
+          "prayer": {
+            "name": "Gebet",
+            "state": {
+              "imsak": "Morgengebet",
+              "dhuhr": "Mittagsgebet",
+              "asr": "Nachmittagsgebet",
+              "maghrib": "Abendgebet",
+              "isha": "Nachtgebet"
+            }
+          }
+        }
+      }
+    },
     "sensor": {
       "imsak": {
         "name": "Morgengebet",

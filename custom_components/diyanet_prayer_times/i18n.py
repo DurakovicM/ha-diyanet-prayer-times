@@ -15,6 +15,7 @@ LANGUAGES: dict[str, str] = {
 
 NAMES: dict[str, dict[str, str]] = {
     "en": {
+        "ezan": "Call to prayer",
         "imsak": "Dawn",
         "sunrise": "Sunrise",
         "dhuhr": "Noon",
@@ -26,6 +27,7 @@ NAMES: dict[str, dict[str, str]] = {
         "timestamp": "timestamp",
     },
     "bs": {
+        "ezan": "Ezan",
         "imsak": "Zora",
         "sunrise": "Izlazak sunca",
         "dhuhr": "Podne",
@@ -37,6 +39,7 @@ NAMES: dict[str, dict[str, str]] = {
         "timestamp": "vremenska oznaka",
     },
     "de": {
+        "ezan": "Gebetsruf",
         "imsak": "Morgengebet",
         "sunrise": "Sonnenaufgang",
         "dhuhr": "Mittagsgebet",
@@ -48,6 +51,7 @@ NAMES: dict[str, dict[str, str]] = {
         "timestamp": "Zeitstempel",
     },
     "nl": {
+        "ezan": "Gebedsoproep",
         "imsak": "Ochtendgebed",
         "sunrise": "Zonsopkomst",
         "dhuhr": "Middaggebed",
@@ -59,6 +63,7 @@ NAMES: dict[str, dict[str, str]] = {
         "timestamp": "tijdstempel",
     },
     "tr": {
+        "ezan": "Ezan",
         "imsak": "İmsak",
         "sunrise": "Güneş",
         "dhuhr": "Öğle",
