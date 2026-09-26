@@ -2,30 +2,30 @@
   "config": {
     "step": {
       "user": {
-        "title": "Select country",
+        "title": "Kies een land",
         "data": {
-          "country_id": "Country"
+          "country_id": "Land"
         }
       },
       "state": {
-        "title": "Select state / province",
+        "title": "Kies een provincie / regio",
         "data": {
-          "state_id": "State / province"
+          "state_id": "Provincie / regio"
         }
       },
       "city": {
-        "title": "Select city / district",
+        "title": "Kies een stad / district",
         "data": {
-          "city_id": "City / district"
+          "city_id": "Stad / district"
         }
       }
     },
     "error": {
-      "cannot_connect": "Could not reach the Diyanet prayer times service."
+      "cannot_connect": "Kan de Diyanet-gebedstijdendienst niet bereiken."
     },
     "abort": {
-      "already_configured": "This city is already configured.",
-      "no_places": "No locations were returned for this selection."
+      "already_configured": "Deze stad is al ingesteld.",
+      "no_places": "Er zijn geen locaties gevonden voor deze keuze."
     }
   },
   "entity": {
@@ -34,15 +34,15 @@
         "name": "Imsak",
         "state_attributes": {
           "time": {
-            "name": "Time"
+            "name": "Tijd"
           }
         }
       },
       "sunrise": {
-        "name": "Sunrise",
+        "name": "Zonsopkomst",
         "state_attributes": {
           "time": {
-            "name": "Time"
+            "name": "Tijd"
           }
         }
       },
@@ -50,7 +50,7 @@
         "name": "Dhuhr",
         "state_attributes": {
           "time": {
-            "name": "Time"
+            "name": "Tijd"
           }
         }
       },
@@ -58,7 +58,7 @@
         "name": "Asr",
         "state_attributes": {
           "time": {
-            "name": "Time"
+            "name": "Tijd"
           }
         }
       },
@@ -66,7 +66,7 @@
         "name": "Maghrib",
         "state_attributes": {
           "time": {
-            "name": "Time"
+            "name": "Tijd"
           }
         }
       },
@@ -74,15 +74,15 @@
         "name": "Isha",
         "state_attributes": {
           "time": {
-            "name": "Time"
+            "name": "Tijd"
           }
         }
       },
       "next_prayer": {
-        "name": "Next prayer",
+        "name": "Volgend gebed",
         "state_attributes": {
           "prayer": {
-            "name": "Prayer",
+            "name": "Gebed",
             "state": {
               "imsak": "Imsak",
               "dhuhr": "Dhuhr",
@@ -92,18 +92,18 @@
             }
           },
           "time": {
-            "name": "Time"
+            "name": "Tijd"
           }
         }
       },
       "hijri_date": {
-        "name": "Hijri date",
+        "name": "Hidjri-datum",
         "state_attributes": {
           "qibla_time": {
-            "name": "Qibla time"
+            "name": "Qibla-tijd"
           },
           "date": {
-            "name": "Date"
+            "name": "Datum"
           }
         }
       }

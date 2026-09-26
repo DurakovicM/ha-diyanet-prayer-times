@@ -32,6 +32,7 @@ def test_parse_times_istanbul(raw_times) -> None:
     assert day.times["isha"] == datetime(2026, 9, 26, 20, 22, tzinfo=TR)
     assert set(day.times) == set(PRAYERS)
     assert day.hijri == "15 Rebiulahir 1448"
+    assert day.hijri_date == (15, 4, 1448)
     assert day.moon_url.startswith("https://")
     assert day.qibla_time is not None
 
@@ -53,6 +54,7 @@ def test_parse_times_fractional_offset() -> None:
     day = parse_times(raw)[0]
     assert day.times["imsak"].utcoffset() == timedelta(hours=5, minutes=30)
     assert day.hijri is None
+    assert day.hijri_date is None
 
 
 def test_parse_times_skips_bad_entries(raw_times) -> None:

@@ -3,15 +3,21 @@
     "step": {
       "user": {
         "title": "Ülke seçin",
-        "data": { "country_id": "Ülke" }
+        "data": {
+          "country_id": "Ülke"
+        }
       },
       "state": {
         "title": "İl / eyalet seçin",
-        "data": { "state_id": "İl / eyalet" }
+        "data": {
+          "state_id": "İl / eyalet"
+        }
       },
       "city": {
         "title": "İlçe / şehir seçin",
-        "data": { "city_id": "İlçe / şehir" }
+        "data": {
+          "city_id": "İlçe / şehir"
+        }
       }
     },
     "error": {
@@ -24,17 +30,83 @@
   },
   "entity": {
     "sensor": {
-      "imsak": { "name": "İmsak" },
-      "sunrise": { "name": "Güneş" },
-      "dhuhr": { "name": "Öğle" },
-      "asr": { "name": "İkindi" },
-      "maghrib": { "name": "Akşam" },
-      "isha": { "name": "Yatsı" },
+      "imsak": {
+        "name": "İmsak",
+        "state_attributes": {
+          "time": {
+            "name": "Saat"
+          }
+        }
+      },
+      "sunrise": {
+        "name": "Güneş",
+        "state_attributes": {
+          "time": {
+            "name": "Saat"
+          }
+        }
+      },
+      "dhuhr": {
+        "name": "Öğle",
+        "state_attributes": {
+          "time": {
+            "name": "Saat"
+          }
+        }
+      },
+      "asr": {
+        "name": "İkindi",
+        "state_attributes": {
+          "time": {
+            "name": "Saat"
+          }
+        }
+      },
+      "maghrib": {
+        "name": "Akşam",
+        "state_attributes": {
+          "time": {
+            "name": "Saat"
+          }
+        }
+      },
+      "isha": {
+        "name": "Yatsı",
+        "state_attributes": {
+          "time": {
+            "name": "Saat"
+          }
+        }
+      },
       "next_prayer": {
         "name": "Sonraki vakit",
-        "state_attributes": { "prayer": { "name": "Vakit" } }
+        "state_attributes": {
+          "prayer": {
+            "name": "Vakit",
+            "state": {
+              "imsak": "İmsak",
+              "dhuhr": "Öğle",
+              "asr": "İkindi",
+              "maghrib": "Akşam",
+              "isha": "Yatsı"
+            }
+          },
+          "time": {
+            "name": "Saat"
+          }
+        }
       },
-      "hijri_date": { "name": "Hicri tarih" }
+      "hijri_date": {
+        "name": "Hicri tarih",
+        "state_attributes": {
+          "qibla_time": {
+            "name": "Kıble saati"
+          },
+          "date": {
+            "name": "Tarih"
+          }
+        }
+      }
     }
   }
 }

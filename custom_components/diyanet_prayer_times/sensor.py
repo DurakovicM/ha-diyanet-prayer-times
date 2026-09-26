@@ -13,6 +13,12 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN, PRAYERS
 from .coordinator import DiyanetConfigEntry, DiyanetCoordinator
+from .hijri import format_hijri
+
+
+def _clock(value: datetime | None) -> str | None:
+    """Local wall-clock time at the city, as published (e.g. '05:23')."""
+    return value.strftime("%H:%M") if value else None
 
 
 async def async_setup_entry(
@@ -65,6 +71,11 @@ class PrayerTimeSensor(DiyanetEntity):
             return None
         return today.times[self._prayer]
 
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Return the plain published time for dashboards."""
+        return {"time": _clock(self.native_value)}
+
 
 class NextPrayerSensor(DiyanetEntity):
     """The next upcoming prayer."""
@@ -84,9 +95,10 @@ class NextPrayerSensor(DiyanetEntity):
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
-        """Return which prayer is next."""
-        upcoming = self.coordinator.next_prayer()
-        return {"prayer": upcoming[0] if upcoming else None}
+        """Return which prayer is next and its plain time."""
+        if (upcoming := self.coordinator.next_prayer()) is None:
+            return {"prayer": None, "time": None}
+        return {"prayer": upcoming[0], "time": _clock(upcoming[1])}
 
 
 class HijriDateSensor(DiyanetEntity):
@@ -98,10 +110,12 @@ class HijriDateSensor(DiyanetEntity):
 
     @property
     def native_value(self) -> str | None:
-        """Return the long Hijri date."""
+        """Return the Hijri date in Home Assistant's language."""
         if (today := self.coordinator.today()) is None:
             return None
-        return today.hijri
+        if today.hijri_date is None:
+            return today.hijri
+        return format_hijri(*today.hijri_date, self.hass.config.language)
 
     @property
     def entity_picture(self) -> str | None:

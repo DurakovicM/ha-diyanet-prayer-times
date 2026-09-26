@@ -2,108 +2,108 @@
   "config": {
     "step": {
       "user": {
-        "title": "Select country",
+        "title": "Odaberite državu",
         "data": {
-          "country_id": "Country"
+          "country_id": "Država"
         }
       },
       "state": {
-        "title": "Select state / province",
+        "title": "Odaberite pokrajinu / regiju",
         "data": {
-          "state_id": "State / province"
+          "state_id": "Pokrajina / regija"
         }
       },
       "city": {
-        "title": "Select city / district",
+        "title": "Odaberite grad / općinu",
         "data": {
-          "city_id": "City / district"
+          "city_id": "Grad / općina"
         }
       }
     },
     "error": {
-      "cannot_connect": "Could not reach the Diyanet prayer times service."
+      "cannot_connect": "Nije moguće povezati se sa servisom Diyanet vaktija."
     },
     "abort": {
-      "already_configured": "This city is already configured.",
-      "no_places": "No locations were returned for this selection."
+      "already_configured": "Ovaj grad je već dodan.",
+      "no_places": "Za ovaj odabir nije pronađena nijedna lokacija."
     }
   },
   "entity": {
     "sensor": {
       "imsak": {
-        "name": "Imsak",
+        "name": "Zora",
         "state_attributes": {
           "time": {
-            "name": "Time"
+            "name": "Vrijeme"
           }
         }
       },
       "sunrise": {
-        "name": "Sunrise",
+        "name": "Izlazak sunca",
         "state_attributes": {
           "time": {
-            "name": "Time"
+            "name": "Vrijeme"
           }
         }
       },
       "dhuhr": {
-        "name": "Dhuhr",
+        "name": "Podne",
         "state_attributes": {
           "time": {
-            "name": "Time"
+            "name": "Vrijeme"
           }
         }
       },
       "asr": {
-        "name": "Asr",
+        "name": "Ikindija",
         "state_attributes": {
           "time": {
-            "name": "Time"
+            "name": "Vrijeme"
           }
         }
       },
       "maghrib": {
-        "name": "Maghrib",
+        "name": "Akšam",
         "state_attributes": {
           "time": {
-            "name": "Time"
+            "name": "Vrijeme"
           }
         }
       },
       "isha": {
-        "name": "Isha",
+        "name": "Jacija",
         "state_attributes": {
           "time": {
-            "name": "Time"
+            "name": "Vrijeme"
           }
         }
       },
       "next_prayer": {
-        "name": "Next prayer",
+        "name": "Sljedeći namaz",
         "state_attributes": {
           "prayer": {
-            "name": "Prayer",
+            "name": "Namaz",
             "state": {
-              "imsak": "Imsak",
-              "dhuhr": "Dhuhr",
-              "asr": "Asr",
-              "maghrib": "Maghrib",
-              "isha": "Isha"
+              "imsak": "Zora",
+              "dhuhr": "Podne",
+              "asr": "Ikindija",
+              "maghrib": "Akšam",
+              "isha": "Jacija"
             }
           },
           "time": {
-            "name": "Time"
+            "name": "Vrijeme"
           }
         }
       },
       "hijri_date": {
-        "name": "Hijri date",
+        "name": "Hidžretski datum",
         "state_attributes": {
           "qibla_time": {
-            "name": "Qibla time"
+            "name": "Vrijeme kible"
           },
           "date": {
-            "name": "Date"
+            "name": "Datum"
           }
         }
       }

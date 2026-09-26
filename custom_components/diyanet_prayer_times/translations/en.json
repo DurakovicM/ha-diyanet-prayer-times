@@ -3,15 +3,21 @@
     "step": {
       "user": {
         "title": "Select country",
-        "data": { "country_id": "Country" }
+        "data": {
+          "country_id": "Country"
+        }
       },
       "state": {
         "title": "Select state / province",
-        "data": { "state_id": "State / province" }
+        "data": {
+          "state_id": "State / province"
+        }
       },
       "city": {
         "title": "Select city / district",
-        "data": { "city_id": "City / district" }
+        "data": {
+          "city_id": "City / district"
+        }
       }
     },
     "error": {
@@ -24,17 +30,83 @@
   },
   "entity": {
     "sensor": {
-      "imsak": { "name": "Imsak" },
-      "sunrise": { "name": "Sunrise" },
-      "dhuhr": { "name": "Dhuhr" },
-      "asr": { "name": "Asr" },
-      "maghrib": { "name": "Maghrib" },
-      "isha": { "name": "Isha" },
+      "imsak": {
+        "name": "Imsak",
+        "state_attributes": {
+          "time": {
+            "name": "Time"
+          }
+        }
+      },
+      "sunrise": {
+        "name": "Sunrise",
+        "state_attributes": {
+          "time": {
+            "name": "Time"
+          }
+        }
+      },
+      "dhuhr": {
+        "name": "Dhuhr",
+        "state_attributes": {
+          "time": {
+            "name": "Time"
+          }
+        }
+      },
+      "asr": {
+        "name": "Asr",
+        "state_attributes": {
+          "time": {
+            "name": "Time"
+          }
+        }
+      },
+      "maghrib": {
+        "name": "Maghrib",
+        "state_attributes": {
+          "time": {
+            "name": "Time"
+          }
+        }
+      },
+      "isha": {
+        "name": "Isha",
+        "state_attributes": {
+          "time": {
+            "name": "Time"
+          }
+        }
+      },
       "next_prayer": {
         "name": "Next prayer",
-        "state_attributes": { "prayer": { "name": "Prayer" } }
+        "state_attributes": {
+          "prayer": {
+            "name": "Prayer",
+            "state": {
+              "imsak": "Imsak",
+              "dhuhr": "Dhuhr",
+              "asr": "Asr",
+              "maghrib": "Maghrib",
+              "isha": "Isha"
+            }
+          },
+          "time": {
+            "name": "Time"
+          }
+        }
       },
-      "hijri_date": { "name": "Hijri date" }
+      "hijri_date": {
+        "name": "Hijri date",
+        "state_attributes": {
+          "qibla_time": {
+            "name": "Qibla time"
+          },
+          "date": {
+            "name": "Date"
+          }
+        }
+      }
     }
   }
 }

@@ -26,8 +26,20 @@ class DayTimes:
     date: date
     times: dict[str, datetime]
     hijri: str | None
+    hijri_date: tuple[int, int, int] | None
     moon_url: str | None
     qibla_time: str | None
+
+
+def _parse_hijri(value: str | None) -> tuple[int, int, int] | None:
+    """Parse 'd.m.yyyy' into (day, month, year)."""
+    try:
+        day, month, year = (int(part) for part in value.split("."))
+    except (AttributeError, ValueError):
+        return None
+    if not 1 <= month <= 12:
+        return None
+    return day, month, year
 
 
 def _parse_day(raw: dict[str, Any]) -> DayTimes:
@@ -41,6 +53,7 @@ def _parse_day(raw: dict[str, Any]) -> DayTimes:
         date=day,
         times=times,
         hijri=raw.get("HicriTarihUzun"),
+        hijri_date=_parse_hijri(raw.get("HicriTarihKisa")),
         moon_url=raw.get("AyinSekliURL"),
         qibla_time=raw.get("KibleSaati"),
     )

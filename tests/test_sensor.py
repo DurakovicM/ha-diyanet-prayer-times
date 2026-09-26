@@ -56,9 +56,12 @@ async def test_prayer_sensors(hass: HomeAssistant, aioclient_mock) -> None:
     for entity_id, value in expected.items():
         assert hass.states.get(entity_id).state == value, entity_id
 
-    assert hass.states.get("sensor.istanbul_next_prayer").attributes["prayer"] == "asr"
+    assert hass.states.get("sensor.istanbul_maghrib").attributes["time"] == "19:03"
+    next_prayer = hass.states.get("sensor.istanbul_next_prayer")
+    assert next_prayer.attributes["prayer"] == "asr"
+    assert next_prayer.attributes["time"] == "16:22"
     hijri = hass.states.get("sensor.istanbul_hijri_date")
-    assert hijri.state == "15 Rebiulahir 1448"
+    assert hijri.state == "15 Rabi al-Thani 1448"
     assert hijri.attributes["qibla_time"] == "11:36"
     assert hijri.attributes["entity_picture"].startswith("https://")
 
@@ -86,3 +89,15 @@ async def test_next_prayer_and_day_rollover(
     tomorrow_imsak = hass.states.get("sensor.istanbul_imsak").state
     assert tomorrow_imsak == next_prayer.state
     assert tomorrow_imsak.startswith("2026-09-27")
+
+
+@pytest.mark.freeze_time(datetime(2026, 9, 26, 14, 0, tzinfo=TR))
+async def test_hijri_follows_ha_language(hass: HomeAssistant, aioclient_mock) -> None:
+    """The Hijri date is shown in Home Assistant's configured language."""
+    hass.config.language = "bs"
+    await _setup(hass, aioclient_mock)
+
+    # Entity names (and new entity IDs) are translated too.
+    assert hass.states.get("sensor.istanbul_aksam").attributes["time"] == "19:03"
+    state = hass.states.get("sensor.istanbul_hidzretski_datum").state
+    assert state == "15. Rebiu-l-ahir 1448"

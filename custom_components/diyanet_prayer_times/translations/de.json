@@ -2,30 +2,30 @@
   "config": {
     "step": {
       "user": {
-        "title": "Select country",
+        "title": "Land auswählen",
         "data": {
-          "country_id": "Country"
+          "country_id": "Land"
         }
       },
       "state": {
-        "title": "Select state / province",
+        "title": "Bundesland / Provinz auswählen",
         "data": {
-          "state_id": "State / province"
+          "state_id": "Bundesland / Provinz"
         }
       },
       "city": {
-        "title": "Select city / district",
+        "title": "Stadt / Bezirk auswählen",
         "data": {
-          "city_id": "City / district"
+          "city_id": "Stadt / Bezirk"
         }
       }
     },
     "error": {
-      "cannot_connect": "Could not reach the Diyanet prayer times service."
+      "cannot_connect": "Der Diyanet-Gebetszeitendienst ist nicht erreichbar."
     },
     "abort": {
-      "already_configured": "This city is already configured.",
-      "no_places": "No locations were returned for this selection."
+      "already_configured": "Diese Stadt ist bereits eingerichtet.",
+      "no_places": "Für diese Auswahl wurden keine Orte gefunden."
     }
   },
   "entity": {
@@ -34,15 +34,15 @@
         "name": "Imsak",
         "state_attributes": {
           "time": {
-            "name": "Time"
+            "name": "Uhrzeit"
           }
         }
       },
       "sunrise": {
-        "name": "Sunrise",
+        "name": "Sonnenaufgang",
         "state_attributes": {
           "time": {
-            "name": "Time"
+            "name": "Uhrzeit"
           }
         }
       },
@@ -50,7 +50,7 @@
         "name": "Dhuhr",
         "state_attributes": {
           "time": {
-            "name": "Time"
+            "name": "Uhrzeit"
           }
         }
       },
@@ -58,7 +58,7 @@
         "name": "Asr",
         "state_attributes": {
           "time": {
-            "name": "Time"
+            "name": "Uhrzeit"
           }
         }
       },
@@ -66,44 +66,44 @@
         "name": "Maghrib",
         "state_attributes": {
           "time": {
-            "name": "Time"
+            "name": "Uhrzeit"
           }
         }
       },
       "isha": {
-        "name": "Isha",
+        "name": "Ischa",
         "state_attributes": {
           "time": {
-            "name": "Time"
+            "name": "Uhrzeit"
           }
         }
       },
       "next_prayer": {
-        "name": "Next prayer",
+        "name": "Nächstes Gebet",
         "state_attributes": {
           "prayer": {
-            "name": "Prayer",
+            "name": "Gebet",
             "state": {
               "imsak": "Imsak",
               "dhuhr": "Dhuhr",
               "asr": "Asr",
               "maghrib": "Maghrib",
-              "isha": "Isha"
+              "isha": "Ischa"
             }
           },
           "time": {
-            "name": "Time"
+            "name": "Uhrzeit"
           }
         }
       },
       "hijri_date": {
-        "name": "Hijri date",
+        "name": "Hidschri-Datum",
         "state_attributes": {
           "qibla_time": {
-            "name": "Qibla time"
+            "name": "Qibla-Zeit"
           },
           "date": {
-            "name": "Date"
+            "name": "Datum"
           }
         }
       }
