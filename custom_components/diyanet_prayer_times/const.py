@@ -17,6 +17,8 @@ CONF_CITY_ID: Final = "city_id"
 CONF_COUNTRY_NAME: Final = "country_name"
 CONF_STATE_NAME: Final = "state_name"
 CONF_CITY_NAME: Final = "city_name"
+CONF_LANGUAGE: Final = "language"
+LANGUAGE_AUTO: Final = "auto"
 
 # Prayer key -> field name in the Diyanet response, in daily order.
 PRAYERS: Final[dict[str, str]] = {

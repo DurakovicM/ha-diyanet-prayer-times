@@ -14,7 +14,8 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 from homeassistant.util import dt as dt_util
 
 from .api import DayTimes, DiyanetClient, DiyanetConnectionError, parse_times
-from .const import CONF_CITY_ID, DOMAIN, UPDATE_INTERVAL
+from .const import CONF_CITY_ID, CONF_LANGUAGE, DOMAIN, LANGUAGE_AUTO, UPDATE_INTERVAL
+from .i18n import base_language
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -75,6 +76,14 @@ class DiyanetCoordinator(DataUpdateCoordinator[list[DayTimes]]):
         await self._store.async_save({"times": raw})
         self._cached = days
         return days
+
+    @property
+    def language(self) -> str:
+        """Display language: the entry's choice, or Home Assistant's."""
+        chosen = self.config_entry.options.get(CONF_LANGUAGE, LANGUAGE_AUTO)
+        if chosen == LANGUAGE_AUTO:
+            return base_language(self.hass.config.language)
+        return base_language(chosen)
 
     @staticmethod
     def day_for(now: datetime, days: list[DayTimes]) -> DayTimes | None:

@@ -34,8 +34,9 @@ async def _run_flow(hass: HomeAssistant):
         result["flow_id"], {"state_id": "539"}
     )
     assert result["step_id"] == "city"
+    assert "language" in result["data_schema"].schema
     return await hass.config_entries.flow.async_configure(
-        result["flow_id"], {"city_id": "9541"}
+        result["flow_id"], {"city_id": "9541", "language": "bs"}
     )
 
 
@@ -58,6 +59,7 @@ async def test_full_flow(hass: HomeAssistant, aioclient_mock) -> None:
         "city_id": "9541",
         "city_name": "ISTANBUL",
     }
+    assert result["options"] == {"language": "bs"}
     assert result["result"].unique_id == "9541"
 
 

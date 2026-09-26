@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from custom_components.diyanet_prayer_times.hijri import (
+from custom_components.diyanet_prayer_times.i18n import (
     HIJRI_MONTHS,
     base_language,
     format_hijri,

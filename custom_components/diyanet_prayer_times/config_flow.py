@@ -6,7 +6,13 @@ from typing import Any
 
 import voluptuous as vol
 
-from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
+from homeassistant.config_entries import (
+    ConfigEntry,
+    ConfigFlow,
+    ConfigFlowResult,
+    OptionsFlow,
+)
+from homeassistant.core import callback
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.selector import (
     SelectOptionDict,
@@ -21,10 +27,27 @@ from .const import (
     CONF_CITY_NAME,
     CONF_COUNTRY_ID,
     CONF_COUNTRY_NAME,
+    CONF_LANGUAGE,
     CONF_STATE_ID,
     CONF_STATE_NAME,
     DOMAIN,
+    LANGUAGE_AUTO,
 )
+from .i18n import LANGUAGES
+
+
+def _language_selector() -> SelectSelector:
+    options = [SelectOptionDict(value=LANGUAGE_AUTO, label=LANGUAGE_AUTO)]
+    options += [
+        SelectOptionDict(value=code, label=label) for code, label in LANGUAGES.items()
+    ]
+    return SelectSelector(
+        SelectSelectorConfig(
+            options=options,
+            mode=SelectSelectorMode.DROPDOWN,
+            translation_key=CONF_LANGUAGE,
+        )
+    )
 
 
 def _select_schema(key: str, places: dict[str, str]) -> vol.Schema:
@@ -62,6 +85,7 @@ class DiyanetConfigFlow(ConfigFlow, domain=DOMAIN):
         name_key: str,
         user_input: dict[str, Any] | None,
         load,
+        extra: dict | None = None,
     ) -> ConfigFlowResult | None:
         """Show a place dropdown; return None once a valid choice was made."""
         errors: dict[str, str] = {}
@@ -76,11 +100,10 @@ class DiyanetConfigFlow(ConfigFlow, domain=DOMAIN):
             self._places = {}
         if not self._places and not errors:
             return self.async_abort(reason="no_places")
-        return self.async_show_form(
-            step_id=step_id,
-            data_schema=_select_schema(id_key, self._places),
-            errors=errors,
-        )
+        schema = _select_schema(id_key, self._places)
+        if extra:
+            schema = schema.extend(extra)
+        return self.async_show_form(step_id=step_id, data_schema=schema, errors=errors)
 
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
@@ -120,10 +143,38 @@ class DiyanetConfigFlow(ConfigFlow, domain=DOMAIN):
             CONF_CITY_NAME,
             user_input,
             lambda: self._client.async_get_cities(self._data[CONF_STATE_ID]),
+            {vol.Required(CONF_LANGUAGE, default=LANGUAGE_AUTO): _language_selector()},
         ):
             return result
         await self.async_set_unique_id(self._data[CONF_CITY_ID])
         self._abort_if_unique_id_configured()
         city, state = self._data[CONF_CITY_NAME], self._data[CONF_STATE_NAME]
         title = city if city == state else f"{city}, {state}"
-        return self.async_create_entry(title=title, data=self._data)
+        language = (user_input or {}).get(CONF_LANGUAGE, LANGUAGE_AUTO)
+        return self.async_create_entry(
+            title=title, data=self._data, options={CONF_LANGUAGE: language}
+        )
+
+    @staticmethod
+    @callback
+    def async_get_options_flow(config_entry: ConfigEntry) -> DiyanetOptionsFlow:
+        """Return the options flow."""
+        return DiyanetOptionsFlow()
+
+
+class DiyanetOptionsFlow(OptionsFlow):
+    """Change the integration's display language."""
+
+    async def async_step_init(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Pick the language."""
+        if user_input is not None:
+            return self.async_create_entry(data=user_input)
+        current = self.config_entry.options.get(CONF_LANGUAGE, LANGUAGE_AUTO)
+        return self.async_show_form(
+            step_id="init",
+            data_schema=vol.Schema(
+                {vol.Required(CONF_LANGUAGE, default=current): _language_selector()}
+            ),
+        )

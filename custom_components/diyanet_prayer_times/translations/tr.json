@@ -16,7 +16,8 @@
       "city": {
         "title": "İlçe / şehir seçin",
         "data": {
-          "city_id": "İlçe / şehir"
+          "city_id": "İlçe / şehir",
+          "language": "Dil"
         }
       }
     },
@@ -106,6 +107,28 @@
             "name": "Tarih"
           }
         }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Diyanet namaz vakitleri ayarları",
+        "data": {
+          "language": "Dil"
+        }
+      }
+    }
+  },
+  "selector": {
+    "language": {
+      "options": {
+        "auto": "Otomatik (Home Assistant dili)",
+        "en": "English",
+        "bs": "Bosanski",
+        "de": "Deutsch",
+        "nl": "Nederlands",
+        "tr": "Türkçe"
       }
     }
   }

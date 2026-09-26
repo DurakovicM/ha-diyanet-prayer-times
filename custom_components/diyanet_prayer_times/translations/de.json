@@ -16,7 +16,8 @@
       "city": {
         "title": "Stadt / Bezirk auswählen",
         "data": {
-          "city_id": "Stadt / Bezirk"
+          "city_id": "Stadt / Bezirk",
+          "language": "Sprache"
         }
       }
     },
@@ -31,7 +32,7 @@
   "entity": {
     "sensor": {
       "imsak": {
-        "name": "Imsak",
+        "name": "Morgengebet",
         "state_attributes": {
           "time": {
             "name": "Uhrzeit"
@@ -47,7 +48,7 @@
         }
       },
       "dhuhr": {
-        "name": "Dhuhr",
+        "name": "Mittagsgebet",
         "state_attributes": {
           "time": {
             "name": "Uhrzeit"
@@ -55,7 +56,7 @@
         }
       },
       "asr": {
-        "name": "Asr",
+        "name": "Nachmittagsgebet",
         "state_attributes": {
           "time": {
             "name": "Uhrzeit"
@@ -63,7 +64,7 @@
         }
       },
       "maghrib": {
-        "name": "Maghrib",
+        "name": "Abendgebet",
         "state_attributes": {
           "time": {
             "name": "Uhrzeit"
@@ -71,7 +72,7 @@
         }
       },
       "isha": {
-        "name": "Ischa",
+        "name": "Nachtgebet",
         "state_attributes": {
           "time": {
             "name": "Uhrzeit"
@@ -84,11 +85,11 @@
           "prayer": {
             "name": "Gebet",
             "state": {
-              "imsak": "Imsak",
-              "dhuhr": "Dhuhr",
-              "asr": "Asr",
-              "maghrib": "Maghrib",
-              "isha": "Ischa"
+              "imsak": "Morgengebet",
+              "dhuhr": "Mittagsgebet",
+              "asr": "Nachmittagsgebet",
+              "maghrib": "Abendgebet",
+              "isha": "Nachtgebet"
             }
           },
           "time": {
@@ -106,6 +107,28 @@
             "name": "Datum"
           }
         }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Einstellungen Diyanet-Gebetszeiten",
+        "data": {
+          "language": "Sprache"
+        }
+      }
+    }
+  },
+  "selector": {
+    "language": {
+      "options": {
+        "auto": "Automatisch (Home-Assistant-Sprache)",
+        "en": "English",
+        "bs": "Bosanski",
+        "de": "Deutsch",
+        "nl": "Nederlands",
+        "tr": "Türkçe"
       }
     }
   }

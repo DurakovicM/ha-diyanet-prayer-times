@@ -16,7 +16,8 @@
       "city": {
         "title": "Odaberite grad / općinu",
         "data": {
-          "city_id": "Grad / općina"
+          "city_id": "Grad / općina",
+          "language": "Jezik"
         }
       }
     },
@@ -106,6 +107,28 @@
             "name": "Datum"
           }
         }
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Postavke Diyanet vaktije",
+        "data": {
+          "language": "Jezik"
+        }
+      }
+    }
+  },
+  "selector": {
+    "language": {
+      "options": {
+        "auto": "Automatski (jezik Home Assistanta)",
+        "en": "English",
+        "bs": "Bosanski",
+        "de": "Deutsch",
+        "nl": "Nederlands",
+        "tr": "Türkçe"
       }
     }
   }
