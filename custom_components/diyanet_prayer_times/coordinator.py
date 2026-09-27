@@ -24,6 +24,13 @@ from .const import (
     UPDATE_INTERVAL,
 )
 from .i18n import resolve_language
+from .religious import (
+    RamadanInfo,
+    ReligiousDay,
+    next_religious_day,
+    ramadan_info,
+    religious_day,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -113,6 +120,19 @@ class DiyanetCoordinator(DataUpdateCoordinator[list[DayTimes]]):
     def today(self, now: datetime | None = None) -> DayTimes | None:
         """Return today's times at the city's location."""
         return self.day_for(now or dt_util.utcnow(), self.data or [])
+
+    def ramadan(self) -> RamadanInfo | None:
+        """Return today's Ramadan status."""
+        if (today := self.today()) is None:
+            return None
+        return ramadan_info(self.data or [], today.date)
+
+    def religious_days(self) -> tuple[ReligiousDay | None, ReligiousDay | None]:
+        """Return today's and the next religious day (within the data window)."""
+        if (today := self.today()) is None:
+            return None, None
+        days = self.data or []
+        return religious_day(days, today.date), next_religious_day(days, today.date)
 
     def next_prayer(self, now: datetime | None = None) -> tuple[str, datetime] | None:
         """Return (prayer key, time) of the next upcoming prayer."""

@@ -21,7 +21,10 @@ async def async_setup_entry(
     async_add_entities: AddConfigEntryEntitiesCallback,
 ) -> None:
     """Set up the binary sensor."""
-    async_add_entities([EzanBinarySensor(entry.runtime_data)])
+    coordinator = entry.runtime_data
+    async_add_entities(
+        [EzanBinarySensor(coordinator), RamadanBinarySensor(coordinator)]
+    )
 
 
 class EzanBinarySensor(DiyanetEntity, BinarySensorEntity):
@@ -47,3 +50,32 @@ class EzanBinarySensor(DiyanetEntity, BinarySensorEntity):
     def extra_state_attributes(self) -> dict[str, Any]:
         """Return which prayer's ezan this is."""
         return {"prayer": self.coordinator.ezan_prayer()}
+
+
+class RamadanBinarySensor(DiyanetEntity, BinarySensorEntity):
+    """On during Ramadan, per Diyanet's Hijri calendar."""
+
+    _attr_icon = "mdi:star-crescent"
+
+    def __init__(self, coordinator: DiyanetCoordinator) -> None:
+        """Initialize the binary sensor."""
+        super().__init__(coordinator, "binary_sensor", "ramadan", "ramadan")
+
+    @property
+    def is_on(self) -> bool | None:
+        """Return True during Ramadan."""
+        if (info := self.coordinator.ramadan()) is None:
+            return None
+        return info.active
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Return the day of Ramadan and its first and last day."""
+        info = self.coordinator.ramadan()
+        if info is None or not info.active:
+            return {"day": None, "first_day": None, "last_day": None}
+        return {
+            "day": info.day,
+            "first_day": info.first_day.isoformat(),
+            "last_day": info.last_day.isoformat() if info.last_day else None,
+        }

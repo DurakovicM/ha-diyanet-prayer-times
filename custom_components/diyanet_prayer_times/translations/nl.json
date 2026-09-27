@@ -46,6 +46,9 @@
             }
           }
         }
+      },
+      "ramadan": {
+        "name": "Ramadan"
       }
     },
     "sensor": {
@@ -125,6 +128,12 @@
             "name": "Datum"
           }
         }
+      },
+      "days_until_ramadan": {
+        "name": "Dagen tot ramadan"
+      },
+      "religious_day": {
+        "name": "Religieuze dag"
       }
     },
     "switch": {

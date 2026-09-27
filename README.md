@@ -56,6 +56,19 @@ language.
 | `sensor.<city>_next_prayer` | timestamp | Automations; attributes `prayer`, `time` |
 | `binary_sensor.<city>_ezan` | on / off | On for 1 minute at each selected prayer (motion class, for Alexa routines); attribute `prayer` |
 | `switch.<city>_ezan_active` | on / off | Master switch: when off, the ezan sensor never turns on |
+| `binary_sensor.<city>_ramadan` | on / off | On during Ramadan; attributes `day`, `first_day`, `last_day` |
+| `sensor.<city>_days_until_ramadan` | `133` d | 0 during Ramadan; attributes `start_date`, `estimated` |
+| `sensor.<city>_religious_day` | `Kadir Gecesi` | Today's religious day or "None"; attributes `key`, `next`, `next_key`, `next_date` |
+
+### Ramadan and religious days
+
+The data source has no calendar, so these are derived from Diyanet's Hijri date on
+each day. Dates within the ~32-day data window are exact (Diyanet's calendar);
+further ahead, the Ramadan start is **estimated** (±1 day, `estimated: true`) and
+becomes exact about a month before. Religious days (`key`): `hijri_new_year`,
+`ashura`, `mawlid`, `regaib`, `miraj`, `barat`, `ramadan_start`, `qadr`,
+`eid_al_fitr_eve`, `eid_al_fitr`, `eid_al_adha_eve`, `eid_al_adha`. Kandil nights are
+shown on the day whose evening starts the holy night.
 
 Prayer keys: `imsak` (Dawn), `sunrise`, `dhuhr` (Noon), `asr` (Afternoon),
 `maghrib` (Sunset), `isha` (Night).

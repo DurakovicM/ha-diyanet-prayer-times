@@ -6,7 +6,7 @@ from datetime import datetime
 from typing import Any
 
 from homeassistant.components.sensor import SensorDeviceClass, SensorEntity
-from homeassistant.const import EntityCategory
+from homeassistant.const import EntityCategory, UnitOfTime
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
@@ -38,6 +38,8 @@ async def async_setup_entry(
         NextPrayerSensor(coordinator),
         NextPrayerTimestampSensor(coordinator),
         HijriDateSensor(coordinator),
+        DaysUntilRamadanSensor(coordinator),
+        ReligiousDaySensor(coordinator),
     ]
     async_add_entities(entities)
 
@@ -174,3 +176,71 @@ class HijriDateSensor(DiyanetEntity, SensorEntity):
         if (today := self.coordinator.today()) is None:
             return {}
         return {"qibla_time": today.qibla_time, "date": today.date.isoformat()}
+
+
+class DaysUntilRamadanSensor(DiyanetEntity, SensorEntity):
+    """Days until the next Ramadan (0 during Ramadan)."""
+
+    _attr_icon = "mdi:calendar-clock"
+    _attr_native_unit_of_measurement = UnitOfTime.DAYS
+
+    def __init__(self, coordinator: DiyanetCoordinator) -> None:
+        """Initialize the sensor."""
+        super().__init__(
+            coordinator, "sensor", "days_until_ramadan", "days_until_ramadan"
+        )
+
+    @property
+    def native_value(self) -> int | None:
+        """Return the number of days until Ramadan starts."""
+        if (info := self.coordinator.ramadan()) is None:
+            return None
+        if info.active:
+            return 0
+        return (info.next_start - self.coordinator.today().date).days
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Return the (possibly estimated) start date."""
+        if (info := self.coordinator.ramadan()) is None:
+            return {}
+        return {
+            "start_date": info.next_start.isoformat(),
+            "estimated": info.next_start_estimated,
+        }
+
+
+class ReligiousDaySensor(DiyanetEntity, SensorEntity):
+    """Today's religious day (Kandil, Eid, ...) per Diyanet's Hijri calendar."""
+
+    _attr_icon = "mdi:star-four-points"
+
+    def __init__(self, coordinator: DiyanetCoordinator) -> None:
+        """Initialize the sensor."""
+        super().__init__(coordinator, "sensor", "religious_day", "religious_day")
+
+    def _name(self, day) -> str:
+        return i18n.religious_day_name(
+            day.key if day else "none",
+            day.number if day else None,
+            self.coordinator.language,
+        )
+
+    @property
+    def native_value(self) -> str | None:
+        """Return today's religious day, or 'None' in the chosen language."""
+        if self.coordinator.today() is None:
+            return None
+        today, _ = self.coordinator.religious_days()
+        return self._name(today)
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Return stable keys for automations and the next religious day."""
+        today, upcoming = self.coordinator.religious_days()
+        return {
+            "key": today.key if today else "none",
+            "next": self._name(upcoming) if upcoming else None,
+            "next_key": upcoming.key if upcoming else None,
+            "next_date": upcoming.date.isoformat() if upcoming else None,
+        }
