@@ -23,7 +23,7 @@
       }
     },
     "error": {
-      "cannot_connect": "Diyanet namaz vakti servisine ulaşılamadı."
+      "cannot_connect": "Namaz vakti veri kaynağına (ezanvakti.emushaf.net) ulaşılamadı."
     },
     "abort": {
       "already_configured": "Bu konum zaten ekli.",

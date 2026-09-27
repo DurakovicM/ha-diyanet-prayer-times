@@ -23,7 +23,7 @@
       }
     },
     "error": {
-      "cannot_connect": "Der Diyanet-Gebetszeitendienst ist nicht erreichbar."
+      "cannot_connect": "Die Datenquelle für Gebetszeiten (ezanvakti.emushaf.net) ist nicht erreichbar."
     },
     "abort": {
       "already_configured": "Diese Stadt ist bereits eingerichtet.",

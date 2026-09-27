@@ -39,7 +39,9 @@ class DiyanetEntity(CoordinatorEntity[DiyanetCoordinator]):
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, entry.entry_id)},
             name=entry.title,
-            manufacturer="Diyanet İşleri Başkanlığı",
+            # Community project; not made by or affiliated with Diyanet.
+            manufacturer="Community integration (unofficial)",
+            model="Prayer times based on Diyanet timetables",
             entry_type=DeviceEntryType.SERVICE,
         )
 

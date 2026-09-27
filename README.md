@@ -1,12 +1,21 @@
 # Diyanet Prayer Times for Home Assistant
 
-Official prayer times from the Turkish Presidency of Religious Affairs
-(Diyanet İşleri Başkanlığı), exactly as published on
-[namazvakitleri.diyanet.gov.tr](https://namazvakitleri.diyanet.gov.tr), no account needed.
+A community-made Home Assistant integration that shows prayer times based on the
+timetables published by the Presidency of Religious Affairs of Türkiye
+(Diyanet İşleri Başkanlığı), matching
+[namazvakitleri.diyanet.gov.tr](https://namazvakitleri.diyanet.gov.tr). No account needed.
 
-Data comes from the free mirror `ezanvakti.emushaf.net`, which serves Diyanet's own
-tables. The integration fetches ~32 days at a time, stores them on disk, and keeps
-working from that cache if the service is temporarily unreachable.
+> **Unofficial project.** This integration is made and maintained independently by
+> [@DurakovicM](https://github.com/DurakovicM). It is **not** made by, affiliated with,
+> endorsed by or connected to Diyanet İşleri Başkanlığı. "Diyanet" is used only to
+> describe which published timetables the times are based on.
+
+Data comes from the free third-party service `ezanvakti.emushaf.net`, which republishes
+Diyanet's public timetables. The integration fetches ~32 days at a time, stores them on
+disk, and keeps working from that cache if the service is temporarily unreachable.
+
+Ideas for what you can do with it: see [Use cases](https://github.com/DurakovicM/ha-diyanet-prayer-times/wiki/Use-cases)
+in the wiki.
 
 ## Installation
 

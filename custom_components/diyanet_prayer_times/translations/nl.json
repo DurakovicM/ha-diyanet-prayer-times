@@ -23,7 +23,7 @@
       }
     },
     "error": {
-      "cannot_connect": "Kan de Diyanet-gebedstijdendienst niet bereiken."
+      "cannot_connect": "Kan de gegevensbron voor gebedstijden (ezanvakti.emushaf.net) niet bereiken."
     },
     "abort": {
       "already_configured": "Deze stad is al ingesteld.",

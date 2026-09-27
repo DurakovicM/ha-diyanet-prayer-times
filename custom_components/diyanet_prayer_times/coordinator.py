@@ -36,7 +36,7 @@ type DiyanetConfigEntry = ConfigEntry[DiyanetCoordinator]
 
 
 class DiyanetCoordinator(DataUpdateCoordinator[list[DayTimes]]):
-    """Fetch official times, persist them, and tick sensors at prayer times."""
+    """Fetch published times, persist them, and tick sensors at prayer times."""
 
     config_entry: DiyanetConfigEntry
 

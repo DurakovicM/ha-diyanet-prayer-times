@@ -23,7 +23,7 @@
       }
     },
     "error": {
-      "cannot_connect": "Nije moguće povezati se sa servisom Diyanet vaktija."
+      "cannot_connect": "Nije moguće povezati se s izvorom podataka o vaktima (ezanvakti.emushaf.net)."
     },
     "abort": {
       "already_configured": "Ovaj grad je već dodan.",

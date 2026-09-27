@@ -23,7 +23,7 @@
       }
     },
     "error": {
-      "cannot_connect": "Could not reach the Diyanet prayer times service."
+      "cannot_connect": "Could not reach the prayer times data source (ezanvakti.emushaf.net)."
     },
     "abort": {
       "already_configured": "This city is already configured.",

@@ -21,7 +21,7 @@ class DiyanetConnectionError(Exception):
 
 @dataclass(frozen=True, slots=True)
 class DayTimes:
-    """Official prayer times for a single day."""
+    """Published prayer times for a single day."""
 
     date: date
     times: dict[str, datetime]
