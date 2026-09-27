@@ -15,6 +15,7 @@ LANGUAGES: dict[str, str] = {
 
 NAMES: dict[str, dict[str, str]] = {
     "en": {
+        "ezan_active": "Call to prayer active",
         "ezan": "Call to prayer",
         "imsak": "Dawn",
         "sunrise": "Sunrise",
@@ -27,6 +28,7 @@ NAMES: dict[str, dict[str, str]] = {
         "timestamp": "timestamp",
     },
     "bs": {
+        "ezan_active": "Ezan aktivan",
         "ezan": "Ezan",
         "imsak": "Zora",
         "sunrise": "Izlazak sunca",
@@ -39,6 +41,7 @@ NAMES: dict[str, dict[str, str]] = {
         "timestamp": "vremenska oznaka",
     },
     "de": {
+        "ezan_active": "Gebetsruf aktiv",
         "ezan": "Gebetsruf",
         "imsak": "Morgengebet",
         "sunrise": "Sonnenaufgang",
@@ -51,6 +54,7 @@ NAMES: dict[str, dict[str, str]] = {
         "timestamp": "Zeitstempel",
     },
     "nl": {
+        "ezan_active": "Gebedsoproep actief",
         "ezan": "Gebedsoproep",
         "imsak": "Ochtendgebed",
         "sunrise": "Zonsopkomst",
@@ -63,6 +67,7 @@ NAMES: dict[str, dict[str, str]] = {
         "timestamp": "tijdstempel",
     },
     "tr": {
+        "ezan_active": "Ezan etkin",
         "ezan": "Ezan",
         "imsak": "İmsak",
         "sunrise": "Güneş",
@@ -112,6 +117,13 @@ def base_language(language: str | None) -> str:
     """Map an HA language code (e.g. 'de-CH') to a supported language."""
     lang = (language or "").split("-")[0].lower()
     return lang if lang in LANGUAGES else DEFAULT_LANGUAGE
+
+
+def resolve_language(chosen: str | None, ha_language: str | None) -> str:
+    """Return the display language for an entry's language option."""
+    if chosen in (None, "auto"):
+        return base_language(ha_language)
+    return base_language(chosen)
 
 
 def name(key: str, language: str | None) -> str:

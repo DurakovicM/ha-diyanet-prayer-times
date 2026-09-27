@@ -45,7 +45,8 @@ language.
 | `sensor.<city>_hijri_date` | `15 Rabi al-Thani 1448` | Moon phase picture, `qibla_time` attribute |
 | `sensor.<city>_imsak` … `_isha` | timestamp | Automations (diagnostic, hidden from default dashboards) |
 | `sensor.<city>_next_prayer` | timestamp | Automations; attributes `prayer`, `time` |
-| `binary_sensor.<city>_ezan` | on / off | On for 1 minute at each of the five prayers (motion class, for Alexa routines); attribute `prayer` |
+| `binary_sensor.<city>_ezan` | on / off | On for 1 minute at each selected prayer (motion class, for Alexa routines); attribute `prayer` |
+| `switch.<city>_ezan_active` | on / off | Master switch: when off, the ezan sensor never turns on |
 
 Prayer keys: `imsak` (Dawn), `sunrise`, `dhuhr` (Noon), `asr` (Afternoon),
 `maghrib` (Sunset), `isha` (Night).
@@ -81,6 +82,10 @@ actions:
 ```
 
 ## Alexa: play the ezan
+
+Choose which prayers trigger the ezan under *Configure → Call to prayer at*
+(default: all five). Use `switch.<city>_ezan_active` to turn the ezan on or off,
+e.g. from the dashboard or an automation when nobody is home.
 
 The standard Alexa skill cannot receive audio from Home Assistant, but an Alexa
 routine can react to `binary_sensor.<city>_ezan` (it behaves like a motion sensor):

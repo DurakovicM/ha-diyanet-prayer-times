@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#14B8A6"/>
+      <stop offset="0.55" stop-color="#0F766E"/>
+      <stop offset="1" stop-color="#064E3B"/>
+    </linearGradient>
+    <radialGradient id="dawn" cx="0.5" cy="1" r="0.7">
+      <stop offset="0" stop-color="#FCD34D" stop-opacity="0.45"/>
+      <stop offset="0.4" stop-color="#F59E0B" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#FBBF24" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FDE68A"/>
+      <stop offset="1" stop-color="#F59E0B"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Tile with dawn glow -->
+  <rect width="512" height="512" rx="112" fill="url(#tile)"/>
+  <rect width="512" height="512" rx="112" fill="url(#dawn)"/>
+
+  <!-- Crescent above the dome -->
+  <path d="M256.13 70 A30 30 0 1 0 283.75 111.42 A25 25 0 1 1 256.13 70 Z" fill="url(#gold)"/>
+
+  <g fill="#F8FAFC">
+    <!-- Finial -->
+    <rect x="252" y="126" width="8" height="46" rx="4"/>
+    <!-- Main dome -->
+    <path d="M168 300 C168 222 214 190 256 166 C298 190 344 222 344 300 Z"/>
+    <!-- Drum -->
+    <rect x="160" y="292" width="192" height="30" rx="4"/>
+    <!-- Side half-domes -->
+    <path d="M132 334 C132 304 150 290 168 284 L168 334 Z"/>
+    <path d="M380 334 C380 304 362 290 344 284 L344 334 Z"/>
+    <!-- Prayer hall -->
+    <rect x="128" y="318" width="256" height="92" rx="6"/>
+    <!-- Minarets -->
+    <path d="M92 196 L106 136 L120 196 Z"/>
+    <rect x="94" y="196" width="24" height="214" rx="3"/>
+    <rect x="86" y="246" width="40" height="10" rx="5"/>
+    <path d="M392 196 L406 136 L420 196 Z"/>
+    <rect x="394" y="196" width="24" height="214" rx="3"/>
+    <rect x="386" y="246" width="40" height="10" rx="5"/>
+    <!-- Ground -->
+    <rect x="72" y="406" width="368" height="14" rx="7"/>
+  </g>
+
+  <!-- Door and windows cut in tile colour -->
+  <g fill="#0F766E">
+    <path d="M236 406 L236 364 A20 20 0 0 1 276 364 L276 406 Z"/>
+    <path d="M168 380 L168 356 A12 12 0 0 1 192 356 L192 380 Z"/>
+    <path d="M320 380 L320 356 A12 12 0 0 1 344 356 L344 380 Z"/>
+  </g>
+</svg>

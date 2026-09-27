@@ -25,7 +25,7 @@ async def async_setup_entry(
 
 
 class EzanBinarySensor(DiyanetEntity, BinarySensorEntity):
-    """On for one minute at each of the five prayer times.
+    """On for one minute at each selected prayer time, while enabled.
 
     Uses the motion device class so voice assistants such as Alexa can
     start a routine from it.
@@ -40,10 +40,10 @@ class EzanBinarySensor(DiyanetEntity, BinarySensorEntity):
 
     @property
     def is_on(self) -> bool:
-        """Return True during the minute after a prayer time."""
-        return self.coordinator.active_prayer() is not None
+        """Return True during the minute after a selected prayer time."""
+        return self.coordinator.ezan_prayer() is not None
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
         """Return which prayer's ezan this is."""
-        return {"prayer": self.coordinator.active_prayer()}
+        return {"prayer": self.coordinator.ezan_prayer()}

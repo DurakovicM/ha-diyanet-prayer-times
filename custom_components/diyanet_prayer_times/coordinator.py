@@ -16,20 +16,19 @@ from homeassistant.util import dt as dt_util
 from .api import DayTimes, DiyanetClient, DiyanetConnectionError, parse_times
 from .const import (
     CONF_CITY_ID,
+    CONF_EZAN_PRAYERS,
     CONF_LANGUAGE,
     CONF_TIME_ZONE,
+    DAILY_PRAYERS,
     DOMAIN,
-    LANGUAGE_AUTO,
     UPDATE_INTERVAL,
 )
-from .i18n import base_language
+from .i18n import resolve_language
 
 _LOGGER = logging.getLogger(__name__)
 
 STORAGE_VERSION = 1
 
-# Prayers considered for "next prayer" and the ezan (sunrise is not a prayer).
-NEXT_PRAYER_KEYS = ("imsak", "dhuhr", "asr", "maghrib", "isha")
 # How long the ezan binary sensor stays on after a prayer time.
 EZAN_DURATION = timedelta(minutes=1)
 
@@ -59,6 +58,8 @@ class DiyanetCoordinator(DataUpdateCoordinator[list[DayTimes]]):
         )
         self._cached: list[DayTimes] = []
         self._unsub_tick: CALLBACK_TYPE | None = None
+        # Master switch for the ezan binary sensor, set by the switch entity.
+        self.ezan_enabled = True
 
     async def _async_setup(self) -> None:
         """Load the persisted times so sensors work while offline."""
@@ -97,10 +98,9 @@ class DiyanetCoordinator(DataUpdateCoordinator[list[DayTimes]]):
     @property
     def language(self) -> str:
         """Display language: the entry's choice, or Home Assistant's."""
-        chosen = self.config_entry.options.get(CONF_LANGUAGE, LANGUAGE_AUTO)
-        if chosen == LANGUAGE_AUTO:
-            return base_language(self.hass.config.language)
-        return base_language(chosen)
+        return resolve_language(
+            self.config_entry.options.get(CONF_LANGUAGE), self.hass.config.language
+        )
 
     @staticmethod
     def day_for(now: datetime, days: list[DayTimes]) -> DayTimes | None:
@@ -118,7 +118,7 @@ class DiyanetCoordinator(DataUpdateCoordinator[list[DayTimes]]):
         """Return (prayer key, time) of the next upcoming prayer."""
         now = now or dt_util.utcnow()
         for day in self.data or []:
-            for key in NEXT_PRAYER_KEYS:
+            for key in DAILY_PRAYERS:
                 if day.times[key] > now:
                     return key, day.times[key]
         return None
@@ -127,10 +127,22 @@ class DiyanetCoordinator(DataUpdateCoordinator[list[DayTimes]]):
         """Return the prayer whose ezan window contains now, if any."""
         now = now or dt_util.utcnow()
         for day in self.data or []:
-            for key in NEXT_PRAYER_KEYS:
+            for key in DAILY_PRAYERS:
                 if day.times[key] <= now < day.times[key] + EZAN_DURATION:
                     return key
         return None
+
+    @property
+    def ezan_prayers(self) -> list[str]:
+        """Prayers selected to trigger the ezan (default: all five)."""
+        return self.config_entry.options.get(CONF_EZAN_PRAYERS, list(DAILY_PRAYERS))
+
+    def ezan_prayer(self, now: datetime | None = None) -> str | None:
+        """Return the prayer whose ezan should play now, honoring the settings."""
+        if not self.ezan_enabled:
+            return None
+        prayer = self.active_prayer(now)
+        return prayer if prayer in self.ezan_prayers else None
 
     def _next_tick(self, now: datetime) -> datetime | None:
         """Next moment a sensor value changes: a prayer or the city's midnight."""
@@ -140,7 +152,7 @@ class DiyanetCoordinator(DataUpdateCoordinator[list[DayTimes]]):
         candidates += [
             end
             for day in self.data or []
-            for key in NEXT_PRAYER_KEYS
+            for key in DAILY_PRAYERS
             if (end := day.times[key] + EZAN_DURATION) > now
         ]
         if (today := self.today(now)) is not None:

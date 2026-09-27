@@ -126,6 +126,11 @@
           }
         }
       }
+    },
+    "switch": {
+      "ezan_active": {
+        "name": "Ezan aktivan"
+      }
     }
   },
   "options": {
@@ -134,7 +139,8 @@
         "title": "Postavke Diyanet vaktije",
         "data": {
           "language": "Jezik",
-          "time_zone": "Vremenska zona lokacije"
+          "time_zone": "Vremenska zona lokacije",
+          "ezan_prayers": "Ezan u"
         }
       }
     }

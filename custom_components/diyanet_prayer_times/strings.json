@@ -126,6 +126,11 @@
           }
         }
       }
+    },
+    "switch": {
+      "ezan_active": {
+        "name": "Call to prayer active"
+      }
     }
   },
   "options": {
@@ -134,7 +139,8 @@
         "title": "Diyanet Prayer Times settings",
         "data": {
           "language": "Language",
-          "time_zone": "Time zone of the location"
+          "time_zone": "Time zone of the location",
+          "ezan_prayers": "Call to prayer at"
         }
       }
     }

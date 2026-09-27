@@ -22,16 +22,19 @@ from homeassistant.helpers.selector import (
     SelectSelectorMode,
 )
 
+from . import i18n
 from .api import DiyanetClient, DiyanetConnectionError
 from .const import (
     CONF_CITY_ID,
     CONF_CITY_NAME,
     CONF_COUNTRY_ID,
     CONF_COUNTRY_NAME,
+    CONF_EZAN_PRAYERS,
     CONF_LANGUAGE,
-    CONF_TIME_ZONE,
     CONF_STATE_ID,
     CONF_STATE_NAME,
+    CONF_TIME_ZONE,
+    DAILY_PRAYERS,
     DOMAIN,
     LANGUAGE_AUTO,
 )
@@ -83,6 +86,18 @@ async def _settings_schema(hass, language: str, time_zone: str) -> dict:
             hass
         ),
     }
+
+
+def _ezan_prayers_selector(language: str) -> SelectSelector:
+    options = [
+        SelectOptionDict(value=key, label=i18n.name(key, language))
+        for key in DAILY_PRAYERS
+    ]
+    return SelectSelector(
+        SelectSelectorConfig(
+            options=options, multiple=True, mode=SelectSelectorMode.LIST
+        )
+    )
 
 
 class DiyanetConfigFlow(ConfigFlow, domain=DOMAIN):
@@ -191,22 +206,27 @@ class DiyanetConfigFlow(ConfigFlow, domain=DOMAIN):
 
 
 class DiyanetOptionsFlow(OptionsFlow):
-    """Change the integration's display language and time zone."""
+    """Change language, time zone and which prayers trigger the ezan."""
 
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
-        """Pick the language and time zone."""
+        """Pick the language, time zone and ezan prayers."""
         if user_input is not None:
             return self.async_create_entry(data=user_input)
         options = self.config_entry.options
-        return self.async_show_form(
-            step_id="init",
-            data_schema=vol.Schema(
-                await _settings_schema(
-                    self.hass,
-                    options.get(CONF_LANGUAGE, LANGUAGE_AUTO),
-                    options.get(CONF_TIME_ZONE, self.hass.config.time_zone),
-                )
-            ),
+        language = options.get(CONF_LANGUAGE, LANGUAGE_AUTO)
+        schema = await _settings_schema(
+            self.hass,
+            language,
+            options.get(CONF_TIME_ZONE, self.hass.config.time_zone),
         )
+        schema[
+            vol.Optional(
+                CONF_EZAN_PRAYERS,
+                default=options.get(CONF_EZAN_PRAYERS, list(DAILY_PRAYERS)),
+            )
+        ] = _ezan_prayers_selector(
+            i18n.resolve_language(language, self.hass.config.language)
+        )
+        return self.async_show_form(step_id="init", data_schema=vol.Schema(schema))

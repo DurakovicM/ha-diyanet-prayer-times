@@ -19,6 +19,7 @@ CONF_STATE_NAME: Final = "state_name"
 CONF_CITY_NAME: Final = "city_name"
 CONF_LANGUAGE: Final = "language"
 CONF_TIME_ZONE: Final = "time_zone"
+CONF_EZAN_PRAYERS: Final = "ezan_prayers"
 LANGUAGE_AUTO: Final = "auto"
 
 # Prayer key -> field name in the Diyanet response, in daily order.
@@ -30,3 +31,7 @@ PRAYERS: Final[dict[str, str]] = {
     "maghrib": "Aksam",
     "isha": "Yatsi",
 }
+
+# The five daily prayers (sunrise is not a prayer), used for "next prayer"
+# and the ezan binary sensor.
+DAILY_PRAYERS: Final = ("imsak", "dhuhr", "asr", "maghrib", "isha")

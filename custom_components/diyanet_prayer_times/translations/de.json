@@ -126,6 +126,11 @@
           }
         }
       }
+    },
+    "switch": {
+      "ezan_active": {
+        "name": "Gebetsruf aktiv"
+      }
     }
   },
   "options": {
@@ -134,7 +139,8 @@
         "title": "Einstellungen Diyanet-Gebetszeiten",
         "data": {
           "language": "Sprache",
-          "time_zone": "Zeitzone des Ortes"
+          "time_zone": "Zeitzone des Ortes",
+          "ezan_prayers": "Gebetsruf bei"
         }
       }
     }

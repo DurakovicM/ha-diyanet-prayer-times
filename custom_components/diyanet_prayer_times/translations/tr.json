@@ -126,6 +126,11 @@
           }
         }
       }
+    },
+    "switch": {
+      "ezan_active": {
+        "name": "Ezan etkin"
+      }
     }
   },
   "options": {
@@ -134,7 +139,8 @@
         "title": "Diyanet namaz vakitleri ayarları",
         "data": {
           "language": "Dil",
-          "time_zone": "Konumun saat dilimi"
+          "time_zone": "Konumun saat dilimi",
+          "ezan_prayers": "Ezan vakitleri"
         }
       }
     }

@@ -126,6 +126,11 @@
           }
         }
       }
+    },
+    "switch": {
+      "ezan_active": {
+        "name": "Gebedsoproep actief"
+      }
     }
   },
   "options": {
@@ -134,7 +139,8 @@
         "title": "Instellingen Diyanet-gebedstijden",
         "data": {
           "language": "Taal",
-          "time_zone": "Tijdzone van de locatie"
+          "time_zone": "Tijdzone van de locatie",
+          "ezan_prayers": "Gebedsoproep bij"
         }
       }
     }
