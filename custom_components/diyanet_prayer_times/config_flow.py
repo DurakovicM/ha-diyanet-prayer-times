@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from typing import Any
+from zoneinfo import available_timezones
 
 import voluptuous as vol
 
@@ -28,6 +29,7 @@ from .const import (
     CONF_COUNTRY_ID,
     CONF_COUNTRY_NAME,
     CONF_LANGUAGE,
+    CONF_TIME_ZONE,
     CONF_STATE_ID,
     CONF_STATE_NAME,
     DOMAIN,
@@ -62,6 +64,25 @@ def _select_schema(key: str, places: dict[str, str]) -> vol.Schema:
             )
         }
     )
+
+
+async def _time_zone_selector(hass) -> SelectSelector:
+    zones = await hass.async_add_executor_job(available_timezones)
+    return SelectSelector(
+        SelectSelectorConfig(
+            options=sorted(zones), mode=SelectSelectorMode.DROPDOWN, sort=False
+        )
+    )
+
+
+async def _settings_schema(hass, language: str, time_zone: str) -> dict:
+    """Language and time zone fields, shared by setup and Configure."""
+    return {
+        vol.Required(CONF_LANGUAGE, default=language): _language_selector(),
+        vol.Required(CONF_TIME_ZONE, default=time_zone): await _time_zone_selector(
+            hass
+        ),
+    }
 
 
 class DiyanetConfigFlow(ConfigFlow, domain=DOMAIN):
@@ -143,16 +164,23 @@ class DiyanetConfigFlow(ConfigFlow, domain=DOMAIN):
             CONF_CITY_NAME,
             user_input,
             lambda: self._client.async_get_cities(self._data[CONF_STATE_ID]),
-            {vol.Required(CONF_LANGUAGE, default=LANGUAGE_AUTO): _language_selector()},
+            await _settings_schema(self.hass, LANGUAGE_AUTO, self.hass.config.time_zone),
         ):
             return result
         await self.async_set_unique_id(self._data[CONF_CITY_ID])
         self._abort_if_unique_id_configured()
         city, state = self._data[CONF_CITY_NAME], self._data[CONF_STATE_NAME]
         title = city if city == state else f"{city}, {state}"
-        language = (user_input or {}).get(CONF_LANGUAGE, LANGUAGE_AUTO)
+        user_input = user_input or {}
         return self.async_create_entry(
-            title=title, data=self._data, options={CONF_LANGUAGE: language}
+            title=title,
+            data=self._data,
+            options={
+                CONF_LANGUAGE: user_input.get(CONF_LANGUAGE, LANGUAGE_AUTO),
+                CONF_TIME_ZONE: user_input.get(
+                    CONF_TIME_ZONE, self.hass.config.time_zone
+                ),
+            },
         )
 
     @staticmethod
@@ -163,18 +191,22 @@ class DiyanetConfigFlow(ConfigFlow, domain=DOMAIN):
 
 
 class DiyanetOptionsFlow(OptionsFlow):
-    """Change the integration's display language."""
+    """Change the integration's display language and time zone."""
 
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
-        """Pick the language."""
+        """Pick the language and time zone."""
         if user_input is not None:
             return self.async_create_entry(data=user_input)
-        current = self.config_entry.options.get(CONF_LANGUAGE, LANGUAGE_AUTO)
+        options = self.config_entry.options
         return self.async_show_form(
             step_id="init",
             data_schema=vol.Schema(
-                {vol.Required(CONF_LANGUAGE, default=current): _language_selector()}
+                await _settings_schema(
+                    self.hass,
+                    options.get(CONF_LANGUAGE, LANGUAGE_AUTO),
+                    options.get(CONF_TIME_ZONE, self.hass.config.time_zone),
+                )
             ),
         )

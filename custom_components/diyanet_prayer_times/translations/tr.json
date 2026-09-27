@@ -17,7 +17,8 @@
         "title": "İlçe / şehir seçin",
         "data": {
           "city_id": "İlçe / şehir",
-          "language": "Dil"
+          "language": "Dil",
+          "time_zone": "Konumun saat dilimi"
         }
       }
     },
@@ -132,7 +133,8 @@
       "init": {
         "title": "Diyanet namaz vakitleri ayarları",
         "data": {
-          "language": "Dil"
+          "language": "Dil",
+          "time_zone": "Konumun saat dilimi"
         }
       }
     }

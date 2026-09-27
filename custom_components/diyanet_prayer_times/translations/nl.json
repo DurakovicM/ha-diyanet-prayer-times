@@ -17,7 +17,8 @@
         "title": "Kies een stad / district",
         "data": {
           "city_id": "Stad / district",
-          "language": "Taal"
+          "language": "Taal",
+          "time_zone": "Tijdzone van de locatie"
         }
       }
     },
@@ -132,7 +133,8 @@
       "init": {
         "title": "Instellingen Diyanet-gebedstijden",
         "data": {
-          "language": "Taal"
+          "language": "Taal",
+          "time_zone": "Tijdzone van de locatie"
         }
       }
     }

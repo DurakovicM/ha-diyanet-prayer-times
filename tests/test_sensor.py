@@ -39,7 +39,7 @@ async def _setup(
         unique_id="9541",
         title="ISTANBUL",
         data={"city_id": "9541", "city_name": "ISTANBUL", "state_name": "ISTANBUL"},
-        options=options or {},
+        options={"time_zone": "Europe/Istanbul"} | (options or {}),
     )
     entry.add_to_hass(hass)
     assert await hass.config_entries.async_setup(entry.entry_id)
@@ -147,11 +147,11 @@ async def test_options_flow_changes_language(
 
     result = await hass.config_entries.options.async_init(entry.entry_id)
     result = await hass.config_entries.options.async_configure(
-        result["flow_id"], {"language": "de"}
+        result["flow_id"], {"language": "de", "time_zone": "Europe/Istanbul"}
     )
     await hass.async_block_till_done()
 
-    assert entry.options == {"language": "de"}
+    assert entry.options["language"] == "de"
     assert _name(hass, "sensor.istanbul_maghrib_time") == "ISTANBUL Abendgebet"
 
 
@@ -179,3 +179,33 @@ async def test_next_prayer_and_day_rollover(
 
     assert hass.states.get("sensor.istanbul_imsak").state == tomorrow_imsak
     assert tomorrow_imsak.startswith("2026-09-27")
+
+
+@pytest.mark.freeze_time(datetime(2026, 9, 26, 12, 0, tzinfo=timezone.utc))
+async def test_defaults_to_home_assistant_time_zone(
+    hass: HomeAssistant, aioclient_mock
+) -> None:
+    """Without a time zone option, times are read in HA's time zone.
+
+    Regression: the source claims GMT+3 for every city, which made
+    European cities trigger an hour early.
+    """
+    await hass.config.async_set_time_zone("Europe/Sarajevo")
+    aioclient_mock.get(
+        f"{BASE_URL}/vakitler/9541", json=load_fixture("vakitler_9541.json")
+    )
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        unique_id="9541",
+        title="ISTANBUL",
+        data={"city_id": "9541", "city_name": "ISTANBUL"},
+    )
+    entry.add_to_hass(hass)
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+
+    # 19:03 local in Sarajevo (UTC+2) is 17:03 UTC, not 16:03.
+    assert hass.states.get("sensor.istanbul_maghrib").state == (
+        "2026-09-26T17:03:00+00:00"
+    )
+    assert hass.states.get("sensor.istanbul_maghrib_time").state == "19:03"

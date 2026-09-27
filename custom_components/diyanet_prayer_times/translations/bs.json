@@ -17,7 +17,8 @@
         "title": "Odaberite grad / općinu",
         "data": {
           "city_id": "Grad / općina",
-          "language": "Jezik"
+          "language": "Jezik",
+          "time_zone": "Vremenska zona lokacije"
         }
       }
     },
@@ -132,7 +133,8 @@
       "init": {
         "title": "Postavke Diyanet vaktije",
         "data": {
-          "language": "Jezik"
+          "language": "Jezik",
+          "time_zone": "Vremenska zona lokacije"
         }
       }
     }

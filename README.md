@@ -27,6 +27,12 @@ Configure* (or while adding a city). *Automatic* follows Home Assistant's system
 language. It changes sensor names, the next-prayer text and the Hijri month.
 Country and city names are shown as Diyanet provides them.
 
+## Time zone
+
+Diyanet publishes local wall-clock times. They are read in Home Assistant's time
+zone by default. If you add a city in another time zone (e.g. Istanbul while your
+Home Assistant is in Germany), set that city's time zone under *Configure*.
+
 ## Entities
 
 Entity IDs start with the device name (e.g. `istanbul`) and do not depend on the

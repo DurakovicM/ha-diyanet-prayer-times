@@ -30,7 +30,7 @@ async def _setup(hass: HomeAssistant, aioclient_mock, options=None) -> None:
         unique_id="9541",
         title="ISTANBUL",
         data={"city_id": "9541", "city_name": "ISTANBUL"},
-        options=options or {},
+        options={"time_zone": "Europe/Istanbul"} | (options or {}),
     )
     entry.add_to_hass(hass)
     assert await hass.config_entries.async_setup(entry.entry_id)

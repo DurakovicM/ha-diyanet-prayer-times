@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import asyncio
 from dataclasses import dataclass
-from datetime import date, datetime, time, timedelta, timezone
+from datetime import date, datetime, time, tzinfo
 import logging
 from typing import Any
 
@@ -42,9 +42,10 @@ def _parse_hijri(value: str | None) -> tuple[int, int, int] | None:
     return day, month, year
 
 
-def _parse_day(raw: dict[str, Any]) -> DayTimes:
+def _parse_day(raw: dict[str, Any], tz: tzinfo) -> DayTimes:
+    # Times are local wall-clock at the location. The response's
+    # GreenwichOrtalamaZamani is always 3.0 (Turkey), so it is ignored.
     day = datetime.strptime(raw["MiladiTarihKisa"], "%d.%m.%Y").date()
-    tz = timezone(timedelta(hours=float(raw["GreenwichOrtalamaZamani"])))
     times = {
         key: datetime.combine(day, time.fromisoformat(raw[field]), tzinfo=tz)
         for key, field in PRAYERS.items()
@@ -59,12 +60,15 @@ def _parse_day(raw: dict[str, Any]) -> DayTimes:
     )
 
 
-def parse_times(raw: list[dict[str, Any]]) -> list[DayTimes]:
-    """Parse a /vakitler response, skipping malformed days."""
+def parse_times(raw: list[dict[str, Any]], tz: tzinfo) -> list[DayTimes]:
+    """Parse a /vakitler response in the location's time zone.
+
+    Malformed days are skipped.
+    """
     days: list[DayTimes] = []
     for entry in raw:
         try:
-            days.append(_parse_day(entry))
+            days.append(_parse_day(entry, tz))
         except (KeyError, TypeError, ValueError) as err:
             _LOGGER.warning("Skipping unparseable day %s: %s", entry, err)
     return sorted(days, key=lambda d: d.date)

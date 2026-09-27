@@ -17,7 +17,8 @@
         "title": "Select city / district",
         "data": {
           "city_id": "City / district",
-          "language": "Language"
+          "language": "Language",
+          "time_zone": "Time zone of the location"
         }
       }
     },
@@ -132,7 +133,8 @@
       "init": {
         "title": "Diyanet Prayer Times settings",
         "data": {
-          "language": "Language"
+          "language": "Language",
+          "time_zone": "Time zone of the location"
         }
       }
     }

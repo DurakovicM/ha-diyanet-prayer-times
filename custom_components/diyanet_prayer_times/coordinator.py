@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, time, timedelta
+from datetime import datetime, time, timedelta, tzinfo
 import logging
 from typing import Any
 
@@ -14,7 +14,14 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 from homeassistant.util import dt as dt_util
 
 from .api import DayTimes, DiyanetClient, DiyanetConnectionError, parse_times
-from .const import CONF_CITY_ID, CONF_LANGUAGE, DOMAIN, LANGUAGE_AUTO, UPDATE_INTERVAL
+from .const import (
+    CONF_CITY_ID,
+    CONF_LANGUAGE,
+    CONF_TIME_ZONE,
+    DOMAIN,
+    LANGUAGE_AUTO,
+    UPDATE_INTERVAL,
+)
 from .i18n import base_language
 
 _LOGGER = logging.getLogger(__name__)
@@ -56,12 +63,12 @@ class DiyanetCoordinator(DataUpdateCoordinator[list[DayTimes]]):
     async def _async_setup(self) -> None:
         """Load the persisted times so sensors work while offline."""
         if stored := await self._store.async_load():
-            self._cached = parse_times(stored.get("times", []))
+            self._cached = parse_times(stored.get("times", []), self.time_zone)
 
     async def _async_update_data(self) -> list[DayTimes]:
         try:
             raw = await self.client.async_get_times(self.city_id)
-            days = parse_times(raw)
+            days = parse_times(raw, self.time_zone)
             if not days:
                 raise DiyanetConnectionError("Response contained no usable days")
         except DiyanetConnectionError as err:
@@ -78,6 +85,14 @@ class DiyanetCoordinator(DataUpdateCoordinator[list[DayTimes]]):
         await self._store.async_save({"times": raw})
         self._cached = days
         return days
+
+    @property
+    def time_zone(self) -> tzinfo:
+        """Time zone of the location: the entry's choice, or Home Assistant's."""
+        name = self.config_entry.options.get(CONF_TIME_ZONE)
+        if name and (tz := dt_util.get_time_zone(name)):
+            return tz
+        return dt_util.get_default_time_zone()
 
     @property
     def language(self) -> str:

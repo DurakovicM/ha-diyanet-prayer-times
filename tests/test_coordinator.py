@@ -38,6 +38,7 @@ def entry(hass: HomeAssistant) -> MockConfigEntry:
             "city_id": "9541",
             "city_name": "ISTANBUL",
         },
+        options={"time_zone": "Europe/Istanbul"},
     )
     entry.add_to_hass(hass)
     return entry

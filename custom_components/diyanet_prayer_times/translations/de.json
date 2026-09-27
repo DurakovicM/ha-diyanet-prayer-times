@@ -17,7 +17,8 @@
         "title": "Stadt / Bezirk auswählen",
         "data": {
           "city_id": "Stadt / Bezirk",
-          "language": "Sprache"
+          "language": "Sprache",
+          "time_zone": "Zeitzone des Ortes"
         }
       }
     },
@@ -132,7 +133,8 @@
       "init": {
         "title": "Einstellungen Diyanet-Gebetszeiten",
         "data": {
-          "language": "Sprache"
+          "language": "Sprache",
+          "time_zone": "Zeitzone des Ortes"
         }
       }
     }
